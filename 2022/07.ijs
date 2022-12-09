@@ -7,7 +7,7 @@ classes =: {. each data
 is_command =: '$' = {.
 get_name =: 5&}.
 NB. get_size =: ". @: > @: {. @: (' '&cut)
-clean =: ] ` get_name @. is_command
+clean =: , @: (] ` get_name @. is_command)
 
 cleaned =: clean each (> -.@:(is_dir +. is_ls) each data) # data
 
@@ -66,10 +66,11 @@ count =: 3 : 0
     item =: > {: , > m
     is_file =: ' ' e. item
     if. is_file do.
-      NB.  TODO: Add size to each parent directory.
       stack =: }: , > m
       num =: ". > {. ' ' cut item
-      (< stack) add__D num
+      for_i. >: i. # stack do.
+      (i {. stack) add__D num
+      end.
     end.
   end.
   D
@@ -77,4 +78,19 @@ count =: 3 : 0
 
 totals =: count dedup cleaned
 answer =: +/ ((<&100001 # ])@:>@:{:) dirs__totals
-NB. destroy__totals ''
+
+total_size =: > {. {: dirs__totals
+current_space =: 70000000 - total_size
+required_space =: 30000000
+need_to_free =: | required_space - current_space
+
+sorting =: /: {: dirs__totals
+sorted =: ([: |: |: /: {:) dirs__totals
+test =: (=&need_to_free) +. (>&need_to_free)
+index =: {. I. test > {: sorted
+answer2 =: > index { {: sorted
+
+stdout (,&LF) ": answer2
+
+destroy__totals ''
+exit 0
