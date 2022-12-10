@@ -73,3 +73,26 @@ simulate =: 3 : 0
 )
 
 answer1 =: # simulate data
+
+NB. x the index of the segment to move
+NB. y the train
+NB. move
+get_old =: (<:@:[ { ]) ,: {
+move =: {. , (tmv@:get_old + {:@:get_old) , }. @: }.
+
+simulate2 =: 3 : 0
+  coords =. 10 2 $ 0
+  visited =. 1 2 $ 0 0
+  history =: 1 2 $ 'initial' ; coords
+  for_inst. y do.
+    coords =. inst move_head coords
+    history =: history , inst ; coords
+    for_i. >: i. 9 do.
+      coords =. i move coords
+    end.
+    visited =. visited , 9 { coords
+  end.
+  /:~ ~. visited
+)
+
+answer2 =: # simulate2 data
