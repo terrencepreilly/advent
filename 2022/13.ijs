@@ -40,3 +40,26 @@ d =: ".@:parse each pairs
 order =: ({. cmp {:)"1 d
 
 answer1 =: +/ order # (>: i. # order)
+
+
+NB. TODO: I made the mergesort backwards, and it sorts from greatest to
+NB. least.  Reverse.
+init =: (,&(<<<2)) @: (,&(<<<6)) @: ,
+
+NB. x The items
+NB. y The range, a list of the number of values to drop and the number to
+NB.   take (right exclusive). For a list, l, of size n, then l to_sort 0, <: n
+NB.   is its identity.
+pivot =: {~ {:
+sorted =: (}.~ {.@:]) ({.~ >@:-/@:|.@:]) ]
+compared =: 0 < pivot cmp"1 0 sorted
+partition_left =: compared # sorted
+partition_right =: -.@:compared # sorted
+
+do_sort =: 0&> @: -/ @: ]
+recurse_left =: partition_left mergesort_in (0 , <:@:#@:partition_left)
+recurse_right =: partition_right mergesort_in (0 , <:@:#@:partition_right)
+mergesort_in =: [`(recurse_left , pivot , recurse_right)@.do_sort
+mergesort =: ] mergesort_in (0 , <: @: #)
+
+answer2 =: (>:@:i.&(<<<2) * (>:@:i.&(<<<6))) |. mergesort init d
