@@ -30,4 +30,25 @@ TakeDigitPrefix ← •ParseFloat ∘ ⊑ ∘ ((+` ¬∘IsDigit)⊸⊔)
 GetDigit ← TakeDigitPrefix (1⊸⊑∘⊢ ↓ GetLine)
 
 Solution ← { +´ 𝕩⊸GetDigit¨ GetStarting 𝕩 }
-•Out •Repr Solution data
+
+
+
+GetSymbolIndices ← <˘∘SymbolIndex
+IsAsterix ← '*' = GetSymbolIndices⊸⊑
+GetAsterixIndices ← IsAsterix / GetSymbolIndices
+FilterOverTwo ← (2 ≤ ≠¨ ) / ⊢
+
+GetGearNumbers ← { 𝕤 ⋄
+  indices ← GetAsterixIndices 𝕩
+  numbers ← (𝕩⊸GetNumbers)¨ indices
+  numbers ↩ (⍷ (𝕩⊸GetCanonical)¨ ∘ <˘)¨ numbers
+
+  gearNumberIndices ← ((2 = ≠)¨ numbers) / numbers
+  𝕩⊸GetDigit¨¨ gearNumberIndices
+}
+
+Solution2 ← +´ ×´¨ ∘ GetGearNumbers
+
+•Out •Repr Solution2 data
+
+# •Out •Repr Solution data
