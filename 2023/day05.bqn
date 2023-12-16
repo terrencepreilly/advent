@@ -64,4 +64,3 @@ Solution ← {
 }
 
 •Show Solution data
-# •Show 13 GetLocationForSeed˜ ParseMaps data
