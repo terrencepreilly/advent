@@ -63,4 +63,13 @@ Solution ← {
   ⌊´ maps⊸GetLocationForSeed¨ seeds
 }
 
-•Show Solution data
+# A naive solution.
+Solution2 ← {
+  seeds ← ParseSeeds 𝕩
+  ExtractSeeds ← ∾ (< ⊑ + ↕ ∘ (1⊸⊑))˘
+  seeds ↩ ExtractSeeds ∘‿2 ⥊ seeds
+  maps ← ParseMaps 𝕩
+  ⌊´ maps⊸GetLocationForSeed¨ seeds
+}
+
+•Show Solution2 data
